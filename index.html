@@ -13,8 +13,8 @@ body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 -apple-system,B
 header{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
 h1{font-size:18px;margin:0;justify-self:start}
 header label{justify-self:end;white-space:nowrap}
-.dl{justify-self:center;color:var(--muted);font-size:13px;text-decoration:none;border-bottom:1px solid var(--line);white-space:nowrap}
-.dl:hover{color:var(--fg);border-color:var(--fg)}
+.dl{justify-self:center;display:inline-block;padding:8px 18px;border-radius:999px;background:#222;color:#fff;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+.dl:hover{background:#000}
 @media (max-width:560px){header{grid-template-columns:1fr auto}header label{grid-column:1/-1;justify-self:center}}
 label{color:var(--muted);font-size:13px}
 select,input[type=range]{font:inherit}
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <section class="cover"><img src="2011-09-23_125042.jpg" alt=""><h2 class="title">Alex Beere</h2></section>
 <header>
  <h1>Alex <span id="count" style="color:var(--muted);font-weight:normal;font-size:14px"></span></h1>
- <a class="dl" href="https://adamthomson.github.io/alex-beere/Alex-Beere-photos.zip" download>Download all (58 MB)</a>
+ <a class="dl" href="https://adamthomson.github.io/alex-beere/Alex-Beere-photos.zip" download>Download all photos (58 MB)</a>
  <label>Tile size <input id="size" type="range" min="1" max="5" step="1" value="4" list="ticks"> <span id="pct">80%</span></label>
  <datalist id="ticks"><option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option></datalist>
 </header>
