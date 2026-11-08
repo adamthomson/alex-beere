@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alex</title>
+<meta property="og:title" content="Alex">
+<meta property="og:image" content="https://adamthomson.github.io/alex-beere/2013-09-29_170600.jpg">
+<style>
+:root{--bg:#f7f6f3;--fg:#222;--muted:#777;--card:#fff;--line:#ddd}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 16px;background:rgba(247,246,243,.95);border-bottom:1px solid var(--line)}
+h1{font-size:18px;margin:0 auto 0 0}
+label{color:var(--muted);font-size:13px}
+select,input[type=range]{font:inherit}
+select{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+.cover{position:relative;height:70vh;min-height:260px;max-height:820px;background:#ddd}
+.cover .title{position:absolute;left:clamp(16px,6vw,80px);top:50%;transform:translateY(-50%);margin:0;color:#fff;font-size:clamp(40px,8vw,96px);font-weight:700;letter-spacing:-.01em;line-height:1;text-shadow:0 2px 18px rgba(0,0,0,.65),0 1px 3px rgba(0,0,0,.5)}
+.cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+#grid{display:flex;flex-wrap:wrap;gap:6px;padding:16px}
+#grid::after{content:"";flex-grow:999}
+.tile{position:relative;margin:0;cursor:zoom-in;overflow:hidden;border-radius:4px;background:#e8e6e1}
+.tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.tile:hover img{transform:scale(1.03)}
+.tile figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:12px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));opacity:0;transition:opacity .2s}
+.tile:hover figcaption{opacity:1}
+#lb{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(20,20,20,.94);color:#eee}
+#lb.open{display:flex}
+#lb img{max-width:94vw;max-height:84vh;object-fit:contain}
+#lb .cap{margin-top:10px;font-size:13px;text-align:center;padding:0 16px}
+#lb button{position:absolute;background:none;border:0;color:#fff;font-size:34px;cursor:pointer;padding:10px 16px;opacity:.75}
+#lb button:hover{opacity:1}
+#prev{left:4px;top:50%;transform:translateY(-50%)}#next{right:4px;top:50%;transform:translateY(-50%)}#close{right:4px;top:4px}
+</style>
+<script>
+const PHOTOS=[{"n":"2005-06-24_223936.jpg","m":1119609576,"b":1119609576,"s":729094,"w":2048,"h":1536},{"n":"2005-09-30_203232.jpg","m":1128069152,"b":1128069152,"s":103102,"w":800,"h":600},{"n":"2005-10-22_203608.jpg","m":1129966568,"b":1129966568,"s":57454,"w":453,"h":600},{"n":"2006-03-09_180058.jpg","m":1141880458,"b":1141880458,"s":90250,"w":800,"h":600},{"n":"2006-04-20_162105.jpg","m":1145506865,"b":1145506865,"s":100779,"w":800,"h":600},{"n":"2006-04-20_162203.jpg","m":1145506923,"b":1145506923,"s":98873,"w":800,"h":600},{"n":"2006-06-10_003234.jpg","m":1149856354,"b":1149856354,"s":19458,"w":428,"h":300},{"n":"2006-06-10_180244.jpg","m":1149919364,"b":1149919364,"s":113598,"w":800,"h":600},{"n":"2006-09-30_120642.jpg","m":1159574802,"b":1159574802,"s":70121,"w":640,"h":480},{"n":"2006-09-30_120646.jpg","m":1159574806,"b":1159574806,"s":58567,"w":640,"h":480},{"n":"2006-09-30_120650.jpg","m":1159574810,"b":1159574810,"s":56740,"w":640,"h":480},{"n":"2006-10-01_001325.jpg","m":1159618405,"b":1159618405,"s":133971,"w":640,"h":480},{"n":"2007-03-24_045812.jpg","m":1174669092,"b":1174669092,"s":242995,"w":1536,"h":2048},{"n":"2007-03-24_153854.jpg","m":1174707534,"b":1174707534,"s":155830,"w":744,"h":558},{"n":"2007-03-24_155142.jpg","m":1174708302,"b":1174708302,"s":117069,"w":744,"h":558},{"n":"2007-03-24_155218.jpg","m":1174708338,"b":1174708338,"s":175965,"w":744,"h":558},{"n":"2007-03-24_155222.jpg","m":1174708342,"b":1174708342,"s":109639,"w":744,"h":558},{"n":"2007-03-24_190154.jpg","m":1174719714,"b":1174719714,"s":32301,"w":600,"h":400},{"n":"2007-03-24_230316.jpg","m":1174734196,"b":1174734196,"s":22887,"w":600,"h":400},{"n":"2007-03-24_230350.jpg","m":1174734230,"b":1174734230,"s":20565,"w":600,"h":400},{"n":"2007-03-24_230354.jpg","m":1174734234,"b":1174734234,"s":25907,"w":600,"h":400},{"n":"2007-03-24_230358.jpg","m":1174734238,"b":1174734238,"s":24217,"w":600,"h":400},{"n":"2007-03-24_230420.jpg","m":1174734260,"b":1174734260,"s":28875,"w":600,"h":400},{"n":"2008-06-14_192536.jpg","m":1213428336,"b":1213428336,"s":1470554,"w":2048,"h":1536},{"n":"2008-06-14_192852.jpg","m":1213428532,"b":1213428532,"s":1512915,"w":2048,"h":1536},{"n":"2008-06-14_193322.jpg","m":1213428802,"b":1213428802,"s":1506801,"w":1536,"h":2048},{"n":"2008-06-14_193338.jpg","m":1213428818,"b":1213428818,"s":1316683,"w":1536,"h":2048},{"n":"2008-06-14_193346.jpg","m":1213428826,"b":1213428826,"s":1529328,"w":1536,"h":2048},{"n":"2008-06-14_193354.jpg","m":1213428834,"b":1213428834,"s":1466073,"w":1536,"h":2048},{"n":"2008-06-14_193412.jpg","m":1213428852,"b":1213428852,"s":1515551,"w":1536,"h":2048},{"n":"2008-06-14_193422.jpg","m":1213428862,"b":1213428862,"s":1481716,"w":1536,"h":2048},{"n":"2008-06-14_193504.jpg","m":1213428904,"b":1213428904,"s":1465607,"w":2048,"h":1536},{"n":"2008-06-14_193522.jpg","m":1213428922,"b":1213428922,"s":1516078,"w":1536,"h":2048},{"n":"2008-06-14_194108.jpg","m":1213429268,"b":1213429268,"s":1445681,"w":2048,"h":1536},{"n":"2008-06-14_194402.jpg","m":1213429442,"b":1213429442,"s":1473799,"w":2048,"h":1536},{"n":"2008-06-14_194412.jpg","m":1213429452,"b":1213429452,"s":1523311,"w":2048,"h":1536},{"n":"2008-06-14_194420.jpg","m":1213429460,"b":1213429460,"s":1402023,"w":2048,"h":1536},{"n":"2008-06-14_194428.jpg","m":1213429468,"b":1213429468,"s":1501876,"w":2048,"h":1536},{"n":"2008-06-14_194702.jpg","m":1213429622,"b":1213429622,"s":1458605,"w":2048,"h":1536},{"n":"2008-06-14_194736.jpg","m":1213429656,"b":1213429656,"s":1387505,"w":2048,"h":1536},{"n":"2008-06-14_194754.jpg","m":1213429674,"b":1213429674,"s":1529455,"w":2048,"h":1536},{"n":"2008-06-14_195554.jpg","m":1213430154,"b":1213430154,"s":1215897,"w":1536,"h":2048},{"n":"2011-02-24_120600.jpg","m":1298502360,"b":1298502360,"s":48673,"w":480,"h":640},{"n":"2011-09-23_125040.jpg","m":1316739040,"b":1316739040,"s":3266462,"w":3872,"h":2592},{"n":"2011-09-23_125041.jpg","m":1316739041,"b":1316739041,"s":2895255,"w":3872,"h":2592},{"n":"2011-09-23_125042.jpg","m":1316739042,"b":1316739042,"s":2382646,"w":3872,"h":2592},{"n":"2011-09-23_125043.jpg","m":1316739043,"b":1316739043,"s":2412291,"w":2592,"h":3872},{"n":"2011-09-23_125044.jpg","m":1316739044,"b":1316739044,"s":1928139,"w":2592,"h":3872},{"n":"2013-07-26_140722-2.jpg","m":1374804442,"b":1374804442,"s":3707162,"w":4000,"h":3000},{"n":"2013-07-26_140722.jpg","m":1374804442,"b":1374804442,"s":3770911,"w":4000,"h":3000},{"n":"2013-09-29_170600.jpg","m":1380427560,"b":1380427560,"s":2763153,"w":4000,"h":2784},{"n":"2019-01-06_131315.jpg","m":1546733595,"b":1546733595,"s":5308643,"w":2976,"h":3968},{"n":"2019-01-06_131320.jpg","m":1546733600,"b":1546733600,"s":1890594,"w":3264,"h":2448}];
+let order=[],cur=0;
+const fmt=t=>new Date(t*1000).toLocaleString(undefined,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+const kb=s=>s>1048576?(s/1048576).toFixed(1)+' MB':Math.round(s/1024)+' KB';
+const MAXH=420;
+function render(){
+ const lvl=+document.getElementById('size').value, H=MAXH*lvl/5;
+ document.getElementById('pct').textContent=(lvl*20)+'%';
+ try{localStorage.setItem('alexLevel',lvl)}catch(e){}
+ order=[...PHOTOS].sort((a,b)=>a.n<b.n?-1:a.n>b.n?1:0);
+ const g=document.getElementById('grid');g.innerHTML='';
+ order.forEach((p,i)=>{
+  const r=p.w/p.h,f=document.createElement('figure');
+  f.className='tile';f.style.flex=r+' 1 '+(r*H)+'px';f.style.aspectRatio=r;
+  f.innerHTML='<img loading="lazy" alt=""><figcaption></figcaption>';
+  f.querySelector('img').src=encodeURI(p.n).replace(/#/g,'%23');
+  f.querySelector('figcaption').textContent=p.n+' · '+fmt(p.m);
+  f.onclick=()=>openLb(i);g.appendChild(f);
+ });
+ document.getElementById('count').textContent=order.length+' photos';
+}
+function openLb(i){cur=(i+order.length)%order.length;const p=order[cur];
+ document.getElementById('lbimg').src=encodeURI(p.n).replace(/#/g,'%23');
+ document.getElementById('lbcap').textContent=(cur+1)+' / '+order.length+'  ·  '+p.n+'  ·  modified '+fmt(p.m)+'  ·  '+p.w+'×'+p.h+'  ·  '+kb(p.s);
+ document.getElementById('lb').classList.add('open');}
+function closeLb(){document.getElementById('lb').classList.remove('open')}
+document.addEventListener('DOMContentLoaded',()=>{
+ try{const z=+localStorage.getItem('alexLevel');if(z>=1&&z<=5)document.getElementById('size').value=z;}catch(e){}
+ document.getElementById('size').oninput=render;
+ document.getElementById('prev').onclick=e=>{e.stopPropagation();openLb(cur-1)};
+ document.getElementById('next').onclick=e=>{e.stopPropagation();openLb(cur+1)};
+ document.getElementById('close').onclick=closeLb;
+ document.getElementById('lb').onclick=e=>{if(e.target.id==='lb')closeLb()};
+ document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')openLb(cur-1);if(e.key==='ArrowRight')openLb(cur+1);});
+ render();
+});
+</script>
+</head>
+<body>
+<section class="cover"><img src="2013-09-29_170600.jpg" alt=""><h2 class="title">Alex Beere</h2></section>
+<header>
+ <h1>Alex <span id="count" style="color:var(--muted);font-weight:normal;font-size:14px"></span></h1>
+ <label>Tile size <input id="size" type="range" min="1" max="5" step="1" value="4" list="ticks"> <span id="pct">80%</span></label>
+ <datalist id="ticks"><option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option></datalist>
+</header>
+<main id="grid"></main>
+<div id="lb"><button id="close" aria-label="Close">&times;</button><button id="prev" aria-label="Previous">&#8249;</button><img id="lbimg" alt=""><div id="lbcap" class="cap"></div><button id="next" aria-label="Next">&#8250;</button></div>
+</body>
+</html>
